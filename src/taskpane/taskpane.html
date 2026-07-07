@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outlook Agenda Enforcer</title>
+    <!-- Office.js CDN -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            background-color: #f3f2f1;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 4px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0078d4;
+            font-size: 1.5rem;
+            margin-top: 0;
+        }
+        p {
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+        .badge {
+            display: inline-block;
+            background-color: #dff6dd;
+            color: #107c41;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        ul {
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 12px;
+        }
+        button {
+            border: none;
+            border-radius: 4px;
+            background-color: #0078d4;
+            color: #ffffff;
+            padding: 8px 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+        button.secondary {
+            background-color: #605e5c;
+        }
+        #diagnosticsOutput {
+            background-color: #f8f8f8;
+            border: 1px solid #edebe9;
+            border-radius: 4px;
+            padding: 12px;
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 0.8rem;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">Active Background Protection</div>
+        <h1>Outlook Agenda Enforcer</h1>
+        <p>This add-in is running in the background to help standardize corporate communications across our organization.</p>
+        <p><strong>How it works:</strong></p>
+        <ul>
+            <li>Every time you send a calendar invite, the add-in checks for a valid agenda in the invitation body.</li>
+            <li>If no agenda is found, sending is temporarily paused, and a template is automatically prepended to the body so you can quickly fill it out.</li>
+            <li>This ensures meetings are productive, well-planned, and highly efficient.</li>
+        </ul>
+        <p>No configuration is needed. You may close this taskpane.</p>
+        <h2>Hosted diagnostics</h2>
+        <p>Use this view to confirm whether the background runtime loaded and whether the appointment send handler actually executed.</p>
+        <div class="toolbar">
+            <button id="refreshDiagnostics" type="button">Refresh diagnostics</button>
+            <button id="clearDiagnostics" type="button" class="secondary">Clear diagnostics</button>
+        </div>
+        <div id="diagnosticsOutput">Loading diagnostics...</div>
+    </div>
+</body>
+</html>

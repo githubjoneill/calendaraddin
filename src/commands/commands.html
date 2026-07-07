@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!--
+    This is the WebView runtime page for the Outlook Agenda Enforcer event-based add-in.
+    It is loaded as a hidden background page by:
+      - Outlook on the web
+      - Outlook on Mac
+      - New Outlook on Windows
+    Classic Outlook on Windows uses the launchevent.js Override instead (see manifest.xml).
+
+    The HtmlWebpackPlugin injects the bundled launchevent.js chunk below,
+    which registers the onAppointmentSendHandler via Office.actions.associate().
+  -->
+  <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+</body>
+
+</html>

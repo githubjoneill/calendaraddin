@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<OfficeApp
+  xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+  xsi:type="MailApp">
+
+  <Id>33e08f87-3205-4672-9721-c49b6b9dc6f8</Id>
+  <Version>1.0.0.10</Version>
+  <ProviderName>Enterprise IT Department</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <DisplayName DefaultValue="Outlook Agenda Enforcer"/>
+  <Description DefaultValue="Standardizes meeting invites by ensuring they are not sent without an agenda. Prompts user and inserts a template if blank."/>
+
+  <IconUrl DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-32.png"/>
+  <HighResolutionIconUrl DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-80.png"/>
+  <SupportUrl DefaultValue="https://githubjoneill.github.io/calendaraddin/support"/>
+
+  <AppDomains>
+    <AppDomain>https://githubjoneill.github.io/calendaraddin</AppDomain>
+  </AppDomains>
+
+  <Hosts>
+    <Host Name="Mailbox"/>
+  </Hosts>
+
+  <Requirements>
+    <Sets>
+      <Set Name="Mailbox" MinVersion="1.1"/>
+    </Sets>
+  </Requirements>
+
+  <FormSettings>
+    <Form xsi:type="ItemEdit">
+      <DesktopSettings>
+        <SourceLocation DefaultValue="https://githubjoneill.github.io/calendaraddin/taskpane.html"/>
+      </DesktopSettings>
+    </Form>
+  </FormSettings>
+
+  <Permissions>ReadWriteItem</Permissions>
+
+  <Rule xsi:type="RuleCollection" Mode="Or">
+    <Rule xsi:type="ItemIs" ItemType="Appointment" FormType="Edit"/>
+  </Rule>
+
+  <DisableEntityHighlighting>false</DisableEntityHighlighting>
+
+  <!--
+    VersionOverrides v1.0 acts as the outer wrapper.
+    The v1.1 block nested inside it supersedes it on all clients that support v1.1,
+    which is required for Runtimes / LaunchEvent (Smart Alerts / OnAppointmentSend).
+  -->
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
+    <Requirements>
+      <bt:Sets DefaultMinVersion="1.8">
+        <bt:Set Name="Mailbox"/>
+      </bt:Sets>
+    </Requirements>
+
+    <Hosts>
+      <Host xsi:type="MailHost">
+        <DesktopFormFactor>
+          <FunctionFile resid="Commands_Url"/>
+
+          <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+            <OfficeTab id="TabDefault">
+              <Group id="msgComposeGroup">
+                <Label resid="GroupLabel"/>
+                <Control xsi:type="Button" id="TaskpaneButton">
+                  <Label resid="TaskpaneButton_Label"/>
+                  <Supertip>
+                    <Title resid="TaskpaneButton_Title"/>
+                    <Description resid="TaskpaneButton_Desc"/>
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16"/>
+                    <bt:Image size="32" resid="icon32"/>
+                    <bt:Image size="80" resid="icon80"/>
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <SourceLocation resid="Taskpane_Url"/>
+                  </Action>
+                </Control>
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+    </Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon16" DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="Taskpane_Url" DefaultValue="https://githubjoneill.github.io/calendaraddin/taskpane.html"/>
+        <bt:Url id="Commands_Url" DefaultValue="https://githubjoneill.github.io/calendaraddin/commands-v10.html"/>
+        <bt:Url id="LaunchEvent_Url" DefaultValue="https://githubjoneill.github.io/calendaraddin/launchevent-v10.js"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="GroupLabel" DefaultValue="Agenda Enforcer"/>
+        <bt:String id="TaskpaneButton_Label" DefaultValue="Enforcer Settings"/>
+        <bt:String id="TaskpaneButton_Title" DefaultValue="Outlook Agenda Enforcer"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="TaskpaneButton_Desc" DefaultValue="View current compliance guidelines and agenda templates."/>
+      </bt:LongStrings>
+    </Resources>
+
+    <!-- v1.1 MUST be nested inside v1.0, not a sibling of it -->
+    <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.1" xsi:type="VersionOverridesV1_1">
+      <Requirements>
+        <bt:Sets DefaultMinVersion="1.12">
+          <bt:Set Name="Mailbox"/>
+        </bt:Sets>
+      </Requirements>
+
+      <Hosts>
+        <Host xsi:type="MailHost">
+          <Runtimes>
+            <!--
+              commands.html is the WebView runtime used by Outlook on the web, on Mac,
+              and new Outlook on Windows. It loads office.js and launchevent.js.
+            -->
+            <Runtime resid="Commands_Url">
+              <!-- launchevent.js is the JavaScript-only override used by classic Outlook on Windows -->
+              <Override type="javascript" resid="LaunchEvent_Url"/>
+            </Runtime>
+          </Runtimes>
+
+          <DesktopFormFactor>
+            <FunctionFile resid="Commands_Url"/>
+
+            <ExtensionPoint xsi:type="AppointmentOrganizerCommandSurface">
+              <OfficeTab id="TabDefault">
+                <Group id="msgComposeGroup">
+                  <Label resid="GroupLabel"/>
+                  <Control xsi:type="Button" id="TaskpaneButton">
+                    <Label resid="TaskpaneButton_Label"/>
+                    <Supertip>
+                      <Title resid="TaskpaneButton_Title"/>
+                      <Description resid="TaskpaneButton_Desc"/>
+                    </Supertip>
+                    <Icon>
+                      <bt:Image size="16" resid="icon16"/>
+                      <bt:Image size="32" resid="icon32"/>
+                      <bt:Image size="80" resid="icon80"/>
+                    </Icon>
+                    <Action xsi:type="ShowTaskpane">
+                      <SourceLocation resid="Taskpane_Url"/>
+                    </Action>
+                  </Control>
+                </Group>
+              </OfficeTab>
+            </ExtensionPoint>
+
+            <ExtensionPoint xsi:type="LaunchEvent">
+              <LaunchEvents>
+                <LaunchEvent Type="OnAppointmentSend" FunctionName="onAppointmentSendHandler" SendMode="Block"/>
+              </LaunchEvents>
+              <SourceLocation resid="Commands_Url"/>
+            </ExtensionPoint>
+          </DesktopFormFactor>
+        </Host>
+      </Hosts>
+
+      <Resources>
+        <bt:Images>
+          <bt:Image id="icon16" DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-16.png"/>
+          <bt:Image id="icon32" DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-32.png"/>
+          <bt:Image id="icon80" DefaultValue="https://githubjoneill.github.io/calendaraddin/assets/icon-80.png"/>
+        </bt:Images>
+        <bt:Urls>
+          <bt:Url id="Taskpane_Url" DefaultValue="https://githubjoneill.github.io/calendaraddin/taskpane.html"/>
+          <bt:Url id="Commands_Url" DefaultValue="https://githubjoneill.github.io/calendaraddin/commands-v10.html"/>
+          <bt:Url id="LaunchEvent_Url" DefaultValue="https://githubjoneill.github.io/calendaraddin/launchevent-v10.js"/>
+        </bt:Urls>
+        <bt:ShortStrings>
+          <bt:String id="GroupLabel" DefaultValue="Agenda Enforcer"/>
+          <bt:String id="TaskpaneButton_Label" DefaultValue="Enforcer Settings"/>
+          <bt:String id="TaskpaneButton_Title" DefaultValue="Outlook Agenda Enforcer"/>
+        </bt:ShortStrings>
+        <bt:LongStrings>
+          <bt:String id="TaskpaneButton_Desc" DefaultValue="View current compliance guidelines and agenda templates."/>
+        </bt:LongStrings>
+      </Resources>
+    </VersionOverrides>
+  </VersionOverrides>
+
+</OfficeApp>
+
+
