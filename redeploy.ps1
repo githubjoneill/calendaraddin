@@ -1,6 +1,6 @@
 # redeploy.ps1
 # Removes and re-registers the Outlook Agenda Enforcer add-in in Exchange Online.
-# Run this from the repo root after uploading dist/commands-v10.html and dist/launchevent-v10.js to GitHub Pages.
+# Run this from the repo root after uploading dist/commands-v10.html and dist/launchevent-v10.js to GitHub Pages
 
 param(
     [Parameter(Mandatory=$true)]
